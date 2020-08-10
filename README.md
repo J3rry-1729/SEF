@@ -1,7 +1,7 @@
 # SEF
 Subdomain Enumeration Framework
 
-## Usage
+# Usage
 
 ### Without Permute
 
