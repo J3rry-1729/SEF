@@ -21,18 +21,13 @@ echo "[#] Gathering Active & Passive subdomains"
 cat $1.passive $1.active | filter-resolved | sort -u > $1.active_passive
 echo ""
 echo "[#] Running dnsgen & shuffledns for permute enumeration"
-dnsgen $1.active_passive | shuffledns -d $1 -r /root/wordlist/resolvers.txt -o $1.permute.tmp
+dnsgen $1.active_passive | shuffledns -d $1 -r /root/wordlist/resolvers.txt -o $1.permute
 echo ""
 echo "[#] Gathering all enumeation result in one file"
-cat $1.permute.tmp | filter-resolved | sort -u > $1.sub.tmp
-echo ""
-echo "[#] Running dnsgen & shuffledns for 2nd permute enumeration"
-dnsgen $1.sub.tmp | shuffledns -d $1 -r /root/wordlist/resolvers.txt -o $1.permute
-echo ""
-echo "[#] Gathering all enumeation result in one file"
-cat $1.active_passive $1.permute.tmp $1.permute | filter-resolved | sort -u > $1.sub
+cat $1.active_passive $1.permute | filter-resolved | sort -u > $1.sub
 echo ""
 echo "[#] Removing extra files"
 rm $1.passive $1.active $1.active_passive $1.permute *.tmp
 echo ""
+echo "Total Subdomain Found [ $(cat $1.sub | wc -l) ]"
 echo "[#] Cool, Subdomain enumeration Done !"
