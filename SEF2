@@ -35,5 +35,9 @@ echo ""
 echo "[#] Removing extra files"
 rm $1.passive $1.active $1.active_passive $1.permute *.tmp
 echo ""
+echo "Running HTTPX over final output"
+httpx -l $1.sub -o $1.httpx
+echo ""
 echo "Total Subdomain Found [ $(cat $1.sub | wc -l) ]"
+echo "Total Httpx domain Found [ $(cat $1.httpx | wc -l) ]"
 echo "[#] Cool, Subdomain enumeration Done !"
