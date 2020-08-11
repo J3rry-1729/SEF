@@ -20,9 +20,6 @@ echo ""
 echo "[#] Gathering Active & Passive subdomains"
 cat $1.passive $1.active | filter-resolved | sort -u > $1.sub
 echo ""
-echo "[#] Removing extra files"
-rm $1.passive $1.active
-echo ""
 echo "Running HTTPX over final output"
 httpx -l $1.sub -o $1.httpx
 echo ""

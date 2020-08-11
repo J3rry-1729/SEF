@@ -24,16 +24,17 @@ echo "[#] Running dnsgen & shuffledns for permute enumeration"
 dnsgen $1.active_passive | shuffledns -d $1 -r /root/wordlist/resolvers.txt -o $1.permute.tmp
 echo ""
 echo "[#] Gathering all enumeation result in one file"
-cat $1.permute.tmp | filter-resolved | sort -u > $1.sub.tmp
+cat $1.permute.tmp | filter-resolved | sort -u > $1.permute.tmp1
 echo ""
 echo "[#] Running dnsgen & shuffledns for 2nd permute enumeration"
-dnsgen $1.sub.tmp | shuffledns -d $1 -r /root/wordlist/resolvers.txt -o $1.permute
+dnsgen $1.permute.tmp1 | shuffledns -d $1 -r /root/wordlist/resolvers.txt -o $1.permute.tmp2
 echo ""
 echo "[#] Gathering all enumeation result in one file"
-cat $1.active_passive $1.permute.tmp $1.permute | filter-resolved | sort -u > $1.sub
+cat $1.active_passive *.tmp | filter-resolved | sort -u > $1.sub
+cat *.tmp | sort -u | filter-resolved > $1.permute
 echo ""
 echo "[#] Removing extra files"
-rm $1.passive $1.active $1.active_passive $1.permute *.tmp
+rm $1.active_passive *.tmp
 echo ""
 echo "Running HTTPX over final output"
 httpx -l $1.sub -o $1.httpx
