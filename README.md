@@ -1,6 +1,24 @@
 # SEF
 Subdomain Enumeration Framework
 
+# Requirnment 
+* Subenum
+    * Subfinder
+    * Findomain
+    * Assetfinder
+    * Amass
+    * Anew
+* Sub.sh
+    * Parallel
+    * JQ
+    * Httprobe
+* ShuffleDNs
+    * MassDns
+    * all.txt
+    * resolver.txt
+* Dnsgen
+* Httpx
+
 # Usage
 
 ### Without Permute
