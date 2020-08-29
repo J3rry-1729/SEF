@@ -13,12 +13,19 @@ echo "[#] Running Subenum for passive enumeration"
 echo ""
 subenum -d $1 -o $1.passive
 echo ""
+echo "[#] Running sub.sh for passive enumeration"
+sub -a $1
+cat $1.txt | sort -u >> $1.passive
+echo ""
 echo "[#] Running ShuffleDns for active enumeration"
 echo ""
 shuffledns -d $1 -w /root/wordlist/all.txt -r /root/wordlist/resolvers.txt -strict-wildcard -o $1.active
 echo ""
 echo "[#] Gathering Active & Passive subdomains"
 cat $1.passive $1.active | filter-resolved | sort -u > $1.sub
+echo ""
+echo "[#] Removing extra files"
+rm $1.txt httprobe_* no_resolve_*
 echo ""
 echo "Running HTTPX over final output"
 httpx -l $1.sub -o $1.httpx
