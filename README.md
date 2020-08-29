@@ -17,6 +17,7 @@ Subdomain Enumeration Framework
     * all.txt
     * resolver.txt
 * Dnsgen
+    * word.txt
 * Httpx
 
 # Usage
