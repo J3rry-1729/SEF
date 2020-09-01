@@ -27,8 +27,18 @@ echo ""
 echo "[#] Removing extra files"
 rm $1.txt httprobe_* no_resolve_*
 echo ""
+echo ""
 echo "Running HTTPX over final output"
-httpx -l $1.sub -o $1.httpx
+httpx -l $1.sub -o $1.httpx.sub
+echo ""
+echo "Running HTTPX CSP over final output"
+cat $1.sub | httpx -csp-probe -silent | grep ".$1" | tee $1.httpx.csp
+echo ""
+echo "Gathering all HTTPX files in one file"
+cat $1.httpx.sub $1.httpx.csp | sort -u > $1.httpx
+echo ""
+echo "[#] Removing extra files"
+rm $1.httpx.sub $1.httpx.csp
 echo ""
 echo "Total Subdomain Found [ $(cat $1.sub | wc -l) ]"
 echo "Total Httpx domain Found [ $(cat $1.httpx | wc -l) ]"
