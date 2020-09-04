@@ -30,8 +30,12 @@ echo ""
 echo "[#] Gathering all enumeation result in one file"
 cat $1.active_passive $1.permute | filter-resolved | sort -u > $1.sub
 echo ""
+echo "[#] Running Subfinder recursive enumeration"
+subfinder -dL $1.sub -recursive -silent -o $1.sub.recursive
+cat $1.sub.recursive | anew $1.sub
+echo ""
 echo "[#] Removing extra files"
-rm $1.active_passive $1.txt httprobe_* no_resolve_*
+rm $1.active_passive $1.txt httprobe_* no_resolve_* $1.sub.recursive
 echo ""
 echo "Running HTTPX over final output"
 httpx -l $1.sub -o $1.httpx.sub
