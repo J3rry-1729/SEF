@@ -15,7 +15,7 @@ Subdomain Enumeration Framework
 * ShuffleDNs
     * MassDns
     * all.txt
-    * resolver.txt
+    * resolvers.txt (public-dns.info)
 * Dnsgen
     * word.txt
 * Httpx
