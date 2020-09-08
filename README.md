@@ -15,6 +15,7 @@ Subdomain Enumeration Framework v2.0
 * Findomain
 * Assetfinder
 * Amass
+* Filter-resolved
 * Anew
 * ShuffleDNs
 * MassDns
