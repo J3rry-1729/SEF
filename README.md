@@ -1,40 +1,32 @@
 # SEF
-Subdomain Enumeration Framework
+
+```
+ _____ _____ _____
+/  ___|  ___|  ___|
+\  -- | |__ | |_
+  --  \  __||  _ |
+/\__/ / |___| |
+\____/\____/\_| @remonsec
+Subdomain Enumeration Framework v2.0
+```
 
 # Requirnment 
-* Subenum
-    * Subfinder
-    * Findomain
-    * Assetfinder
-    * Amass
-    * Anew
-* Sub.sh
-    * Parallel
-    * JQ
-    * Httprobe
+* Subfinder
+* Findomain
+* Assetfinder
+* Amass
+* Anew
 * ShuffleDNs
-    * MassDns
-    * all.txt
-    * resolvers.txt (public-dns.info)
+* MassDns
+* all.txt
+* resolvers.txt
 * Dnsgen
-    * word.txt
 * Httpx
+
+Using resolver.txt from public-dns.info
 
 # Usage
 
-### Without Permute
-
-```
-SEF0 site.com
-```
-### With Permute
-
 ```
 SEF site.com
-```
-
-### With Double Permute
-
-```
-SEF2 site.com
 ```

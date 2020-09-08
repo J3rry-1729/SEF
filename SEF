@@ -1,54 +1,84 @@
 #!/bin/bash
-echo ""
-echo "_____ ___________"
-echo "/  ___|  ___|  ___|"
-echo "\  -- | |__ | |_"
-echo "  --  \  __||  _ |"
-echo "/\__/ / |___| |"
-echo "\____/\____/\_| @remonsec"
-echo "Subdomain Enumeration Framework"
 
-echo ""
-echo "[#] Running Subenum for passive enumeration"
-echo ""
-subenum -d $1 -o $1.passive
-echo ""
-echo "[#] Running sub.sh for passive enumeration"
-sub -a $1
-cat $1.txt | sort -u >> $1.passive
-echo ""
-echo "[#] Running ShuffleDns for active enumeration"
-echo ""
-shuffledns -d $1 -w /root/wordlist/all.txt -r /root/wordlist/resolvers.txt -strict-wildcard -o $1.active
-echo ""
-echo "[#] Gathering Active & Passive subdomains"
-cat $1.passive $1.active | filter-resolved | sort -u > $1.active_passive
-echo ""
-echo "[#] Running dnsgen & shuffledns for permute enumeration"
-dnsgen $1.active_passive | shuffledns -d $1 -r /root/wordlist/resolvers.txt -o $1.permute
-echo ""
-echo "[#] Gathering all enumeation result in one file"
-cat $1.active_passive $1.permute | filter-resolved | sort -u > $1.sub
-echo ""
-echo "[#] Running Subfinder recursive enumeration"
-subfinder -dL $1.sub -recursive -silent -o $1.sub.recursive
-cat $1.sub.recursive | anew $1.sub
-echo ""
-echo "[#] Removing extra files"
-rm $1.active_passive $1.txt httprobe_* no_resolve_* $1.sub.recursive
-echo ""
-echo "Running HTTPX over final output"
-httpx -l $1.sub -o $1.httpx.sub
-echo ""
-echo "Running HTTPX CSP over final output"
-cat $1.sub | httpx -csp-probe -silent | grep ".$1" | tee $1.httpx.csp
-echo ""
-echo "Gathering all HTTPX files in one file"
-cat $1.httpx.sub $1.httpx.csp | sort -u > $1.httpx
-echo ""
-echo "[#] Removing extra files"
-rm $1.httpx.sub $1.httpx.csp
-echo ""
-echo "Total Subdomain Found [ $(cat $1.sub | wc -l) ]"
-echo "Total Httpx domain Found [ $(cat $1.httpx | wc -l) ]"
-echo "[#] Cool, Subdomain enumeration Done !"
+## Tools that will be used
+# Subfinder
+# Amass
+# Assetfinder
+# Findomain
+# Anew
+# Filter-Resolved
+# ShuffleDNS
+# Dnsgen
+# Httpx
+
+## Banner
+function banner() {
+    echo ""
+    echo "_____ ___________"
+    echo "/  ___|  ___|  ___|"
+    echo "\  -- | |__ | |_"
+    echo "  --  \  __||  _ |"
+    echo "/\__/ / |___| |"
+    echo "\____/\____/\_| @remonsec"
+    echo "Subdomain Enumeration Framework"
+}
+
+## Variables 
+domain=$1
+
+## Function
+function Passive() {
+    subfinder -d $domain -o subfinder.txt
+    assetfinder --subs-only $domain | sort -u > assetfinder.txt
+    amass enum -passive -norecursive -noalts -d $domain -config /root/.config/amass/config.ini -o amass.txt
+    findomain -t $domain -u findomain.txt
+    cat subfinder.txt assetfinder.txt amass.txt findomain.txt | sort -u > passive.txt
+    rm subfinder.txt assetfinder.txt amass.txt findomain.txt
+}
+function Active() {
+    shuffledns -d $domain -w /root/wordlist/all.txt -r /root/wordlist/resolvers.txt -o active_tmp.txt
+    cat active_tmp.txt | sed 's/*.//' > active.txt
+    rm active_tmp.txt
+}
+function ActPsv() {
+    cat active.txt passive.txt | sort -u | filter-resolved > active_passive.txt
+    rm active.txt passive.txt
+}
+function Permute() {
+    if [[ $(cat active_passive.txt | wc -l) -le 50 ]]
+    then
+        dnsgen active_passive.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute1.txt
+        dnsgen permute1.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute2.txt
+        cat permute1.txt permute2.txt | sort -u | filter-resolved > permute.txt
+        rm permute1.txt permute2.txt
+    elif [[ $(cat active_passive.txt | wc -l) -le 500 ]]
+    then
+        dnsgen active_passive.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute.txt
+    else
+        echo "[#] No Permutation"
+    fi
+}
+function SubFinal() {
+    cat *.txt | sort -u > active_passive_permute.txt
+    subfinder -dL active_passive_permute.txt -recursive -o recursive.txt
+    cat active_passive_permute.txt recursive | sort -u > sub.txt
+    rm active_passive_permute.txt recursive.txt
+}
+function Htpx() {
+    httpx -l sub.txt -silent -o sub.httpx
+    httpx -l sub.txt -csp-probe -silent | grep ".$domain" | anew sub.httpx
+}
+function sefresult() {
+    echo ""
+    echo "[#] Total Subdomain Found $(cat sub.txt | wc -l)"
+    echo "[#] Total HTTPx Found $(cat sub.httpx | wc -l)"
+}
+
+## Logic
+Passive 
+Active
+ActPsv
+Permute
+SubFinal
+Htpx
+sefresult
