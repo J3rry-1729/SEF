@@ -59,10 +59,7 @@ function Permute() {
     fi
 }
 function SubFinal() {
-    cat *.txt | sort -u > active_passive_permute.txt
-    subfinder -dL active_passive_permute.txt -recursive -o recursive.txt
-    cat active_passive_permute.txt recursive | sort -u > sub.txt
-    rm active_passive_permute.txt recursive.txt
+    cat *.txt | sort -u > sub.txt
 }
 function Htpx() {
     httpx -l sub.txt -silent -o sub.httpx
