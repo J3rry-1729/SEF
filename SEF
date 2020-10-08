@@ -28,7 +28,7 @@ domain=$1
 
 ## Function
 function Passive() {
-    subfinder -d $domain -o subfinder.txt
+    subfinder -d $domain -o subfinder.txt -all
     assetfinder --subs-only $domain | sort -u > assetfinder.txt
     amass enum -passive -norecursive -noalts -d $domain -config /root/.config/amass/config.ini -o amass.txt
     findomain -t $domain -u findomain.txt
