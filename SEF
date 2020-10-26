@@ -75,22 +75,22 @@ function sefresult() {
 banner
 echo ""
 echo ""
-echo "// Running Passive Enumeration on $domain \n"
+echo "// Running Passive Enumeration on $domain"
 Passive &>/dev/null
 sleep 5
-echo "// Running Active Enumeration on $domain \n"
+echo "// Running Active Enumeration on $domain"
 Active &>/dev/null
 sleep 5
-echo "// Mixing Active & Passive Results on $domain \n"
+echo "// Mixing Active & Passive Results on $domain"
 ActPsv &>/dev/null
 sleep 5
-echo "// Running Permute Enumeration on $domain \n"
+echo "// Running Permute Enumeration on $domain"
 Permute &>/dev/null
 sleep 5
-echo "// Generating Final Subdomain List on $domain \n"
+echo "// Generating Final Subdomain List on $domain"
 SubFinal &>/dev/null
 sleep 5
-echo "// Running Httpx on $domain \n \n"
+echo "// Running Httpx on $domain"
 Htpx &>/dev/null
 sleep 5
 sefresult
