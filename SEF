@@ -6,20 +6,21 @@
 # Assetfinder
 # Findomain
 # Anew
-# Filter-Resolved
 # ShuffleDNS
 # Dnsgen
 # Httpx
 
 ## Banner
 function banner() {
+    echo "
+        ░██████╗███████╗███████╗
+        ██╔════╝██╔════╝██╔════╝
+        ╚█████╗░█████╗░░█████╗░░
+        ░╚═══██╗██╔══╝░░██╔══╝░░
+        ██████╔╝███████╗██║░░░░░
+        ╚═════╝░╚══════╝╚═╝░░░░░"
     echo ""
-    echo "_____ ___________"
-    echo "/  ___|  ___|  ___|"
-    echo "\  -- | |__ | |_"
-    echo "  --  \  __||  _ |"
-    echo "/\__/ / |___| |"
-    echo "\____/\____/\_| @remonsec"
+    echo  "     @remonsec"
     echo "Subdomain Enumeration Framework"
 }
 
@@ -41,7 +42,7 @@ function Active() {
     rm active_tmp.txt
 }
 function ActPsv() {
-    cat active.txt passive.txt | sort -u | filter-resolved > active_passive.txt
+    cat active.txt passive.txt | sort -u | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o active_passive.txt
     rm active.txt passive.txt
 }
 function Permute() {
@@ -49,7 +50,7 @@ function Permute() {
     then
         dnsgen active_passive.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute1.txt
         dnsgen permute1.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute2.txt
-        cat permute1.txt permute2.txt | sort -u | filter-resolved > permute.txt
+        cat permute1.txt permute2.txt | sort -u > permute.txt
         rm permute1.txt permute2.txt
     elif [[ $(cat active_passive.txt | wc -l) -le 500 ]]
     then
@@ -66,16 +67,30 @@ function Htpx() {
     httpx -l sub.txt -csp-probe -silent | grep ".$domain" | anew sub.httpx
 }
 function sefresult() {
-    echo ""
     echo "[#] Total Subdomain Found $(cat sub.txt | wc -l)"
     echo "[#] Total HTTPx Found $(cat sub.httpx | wc -l)"
 }
 
 ## Logic
-Passive 
-Active
-ActPsv
-Permute
-SubFinal
-Htpx
+banner
+echo ""
+echo ""
+echo "// Running Passive Enumeration on $domain \n"
+Passive &>/dev/null
+sleep 5
+echo "// Running Active Enumeration on $domain \n"
+Active &>/dev/null
+sleep 5
+echo "// Mixing Active & Passive Results on $domain \n"
+ActPsv &>/dev/null
+sleep 5
+echo "// Running Permute Enumeration on $domain \n"
+Permute &>/dev/null
+sleep 5
+echo "// Generating Final Subdomain List on $domain \n"
+SubFinal &>/dev/null
+sleep 5
+echo "// Running Httpx on $domain \n \n"
+Htpx &>/dev/null
+sleep 5
 sefresult
