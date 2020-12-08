@@ -33,38 +33,42 @@ function Passive() {
     assetfinder --subs-only $domain | sort -u > assetfinder.txt
     amass enum -passive -norecursive -noalts -d $domain -config /root/.config/amass/config.ini -o amass.txt
     findomain -t $domain -u findomain.txt
-    cat subfinder.txt assetfinder.txt amass.txt findomain.txt | sort -u > passive.txt
+    cat subfinder.txt assetfinder.txt amass.txt findomain.txt | grep -F ".$domain" | sort -u > passive.txt
     rm subfinder.txt assetfinder.txt amass.txt findomain.txt
 }
 function Active() {
-    shuffledns -d $domain -w /root/wordlist/all.txt -r /root/wordlist/resolvers.txt -o active_tmp.txt
-    cat active_tmp.txt | sed 's/*.//' > active.txt
+    shuffledns -d $domain -w /root/wordlist/assetnote/2mSubdomain.txt -r /root/wordlist/resolvers.txt -o active_tmp.txt
+    cat active_tmp.txt | grep -F ".$domain" | sed 's/*.//' > active.txt
     rm active_tmp.txt
 }
 function ActPsv() {
-    cat active.txt passive.txt | sort -u | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o active_passive.txt
+    cat active.txt passive.txt | grep -F ".$domain" | sort -u | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o active_passive.txt
     rm active.txt passive.txt
 }
 function Permute() {
     if [[ $(cat active_passive.txt | wc -l) -le 50 ]]
     then
-        dnsgen active_passive.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute1.txt
-        dnsgen permute1.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute2.txt
-        cat permute1.txt permute2.txt | sort -u > permute.txt
-        rm permute1.txt permute2.txt
+        dnsgen active_passive.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute1_tmp.txt
+        cat permute1_tmp.txt | grep -F ".$domain" > permute1.txt 
+        dnsgen permute1.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute2_tmp.txt
+        cat permute2_tmp.txt | grep -F ".$domain" > permute2.txt
+        cat permute1.txt permute2.txt | grep -F ".$domain" | sort -u > permute.txt
+        rm permute1.txt permute1_tmp.txt permute2.txt permute2_tmp.txt
     elif [[ $(cat active_passive.txt | wc -l) -le 500 ]]
     then
-        dnsgen active_passive.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute.txt
+        dnsgen active_passive.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute_tmp.txt
+        cat permute_tmp.txt | grep -F ".$domain" > permute.txt
+        rm permute_tmp.txt
     else
         echo "[#] No Permutation"
     fi
 }
 function SubFinal() {
-    cat *.txt | sort -u > sub.txt
+    cat active_passive.txt permute.txt | grep -F ".$domain" | sort -u > sub.txt
 }
 function Htpx() {
     httpx -l sub.txt -silent -o sub.httpx
-    httpx -l sub.txt -csp-probe -silent | grep ".$domain" | anew sub.httpx
+    httpx -l sub.txt -csp-probe -silent | grep -F ".$domain" | anew sub.httpx
 }
 function sefresult() {
     echo "[#] Total Subdomain Found $(cat sub.txt | wc -l)"
@@ -77,20 +81,21 @@ echo ""
 echo ""
 echo "// Running Passive Enumeration on $domain"
 Passive &>/dev/null
-sleep 5
+sleep 2
 echo "// Running Active Enumeration on $domain"
 Active &>/dev/null
-sleep 5
+sleep 2
 echo "// Mixing Active & Passive Results on $domain"
 ActPsv &>/dev/null
-sleep 5
+sleep 2
 echo "// Running Permute Enumeration on $domain"
 Permute &>/dev/null
-sleep 5
+sleep 2
 echo "// Generating Final Subdomain List on $domain"
 SubFinal &>/dev/null
-sleep 5
+sleep 2
 echo "// Running Httpx on $domain"
 Htpx &>/dev/null
-sleep 5
+sleep 2
+echo ""
 sefresult
