@@ -39,7 +39,7 @@ function Passive() {
 
 function Active() {
     shuffledns -d $domain -w /root/wordlist/assetnote/2mSubdomain.txt -r /root/wordlist/resolvers.txt -o active_tmp.txt
-    cat active_tmp.txt | grep -F ".$domain" | sed 's/*.//' > active.txt
+    cat active_tmp.txt | grep -F ".$domain" | sed "s/*.//" > active.txt
     rm active_tmp.txt
 }
 
