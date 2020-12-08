@@ -20,7 +20,7 @@ function banner() {
         ██████╔╝███████╗██║░░░░░
         ╚═════╝░╚══════╝╚═╝░░░░░"
     echo ""
-    echo  "     @remonsec"
+    echo  "       @remonsec"
     echo "Subdomain Enumeration Framework"
 }
 
@@ -36,15 +36,18 @@ function Passive() {
     cat subfinder.txt assetfinder.txt amass.txt findomain.txt | grep -F ".$domain" | sort -u > passive.txt
     rm subfinder.txt assetfinder.txt amass.txt findomain.txt
 }
+
 function Active() {
     shuffledns -d $domain -w /root/wordlist/assetnote/2mSubdomain.txt -r /root/wordlist/resolvers.txt -o active_tmp.txt
     cat active_tmp.txt | grep -F ".$domain" | sed 's/*.//' > active.txt
     rm active_tmp.txt
 }
+
 function ActPsv() {
     cat active.txt passive.txt | grep -F ".$domain" | sort -u | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o active_passive.txt
     rm active.txt passive.txt
 }
+
 function Permute() {
     if [[ $(cat active_passive.txt | wc -l) -le 50 ]]
     then
@@ -54,7 +57,7 @@ function Permute() {
         cat permute2_tmp.txt | grep -F ".$domain" > permute2.txt
         cat permute1.txt permute2.txt | grep -F ".$domain" | sort -u > permute.txt
         rm permute1.txt permute1_tmp.txt permute2.txt permute2_tmp.txt
-    elif [[ $(cat active_passive.txt | wc -l) -le 500 ]]
+    elif [[ $(cat active_passive.txt | wc -l) -le 100 ]]
     then
         dnsgen active_passive.txt | shuffledns -d $domain -r /root/wordlist/resolvers.txt -o permute_tmp.txt
         cat permute_tmp.txt | grep -F ".$domain" > permute.txt
@@ -63,39 +66,72 @@ function Permute() {
         echo "[#] No Permutation"
     fi
 }
+
 function SubFinal() {
     cat active_passive.txt permute.txt | grep -F ".$domain" | sort -u > sub.txt
 }
+
 function Htpx() {
     httpx -l sub.txt -silent -o sub.httpx
     httpx -l sub.txt -csp-probe -silent | grep -F ".$domain" | anew sub.httpx
 }
+
+
+### Footer Text ###
 function sefresult() {
     echo "[#] Total Subdomain Found $(cat sub.txt | wc -l)"
     echo "[#] Total HTTPx Found $(cat sub.httpx | wc -l)"
 }
 
+function text1() {
+    echo ""
+    echo ""
+    echo "// Running Passive Enumeration on $domain"
+}
+
+function text2() {
+    sleep 2
+    echo "// Running Active Enumeration on $domain"
+}
+
+function text3() {
+    sleep 2
+    echo "// Mixing Active & Passive Results on $domain"
+}
+
+function text4() {
+    sleep 2
+    echo "// Running Permute Enumeration on $domain"
+}
+
+function text5() {
+    sleep 2
+    echo "// Generating Final Subdomain List on $domain"
+}
+
+function text6() {
+    sleep 2
+    echo "// Running Httpx on $domain"
+}
+
+function text7() {
+    echo ""
+}
+
+
 ## Logic
 banner
-echo ""
-echo ""
-echo "// Running Passive Enumeration on $domain"
+text1
 Passive &>/dev/null
-sleep 2
-echo "// Running Active Enumeration on $domain"
+text2
 Active &>/dev/null
-sleep 2
-echo "// Mixing Active & Passive Results on $domain"
+text3
 ActPsv &>/dev/null
-sleep 2
-echo "// Running Permute Enumeration on $domain"
+text4
 Permute &>/dev/null
-sleep 2
-echo "// Generating Final Subdomain List on $domain"
+text5
 SubFinal &>/dev/null
-sleep 2
-echo "// Running Httpx on $domain"
+text6
 Htpx &>/dev/null
-sleep 2
-echo ""
+text7
 sefresult
