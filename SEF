@@ -86,8 +86,10 @@ function Htpx() {
 
 ### Footer Text ###
 function sefresult() {
+    echo ""
+    echo ""
     echo "[#] Total Subdomain Found $(cat sub.txt | wc -l)"
-    echo "[#] Total HTTPx Found $(cat sub.httpx | wc -l)"
+    echo "[#] Total HTTP Probed Found $(cat sub.httpx | wc -l)"
     echo "[/] Script completed in total $(format_time $SECONDS)"
 }
 
@@ -99,44 +101,28 @@ function text1() {
 
 function text2() {
     sleep 2
-    echo "[/] Script completed in $(format_time $SECONDS)"
-    echo ""
     echo "// Running Active Enumeration on $domain"
 }
 
 function text3() {
     sleep 2
-    echo "[/] Script completed in $(format_time $SECONDS)"
-    echo ""
     echo "// Mixing Active & Passive Results on $domain"
 }
 
 function text4() {
     sleep 2
-    echo "[/] Script completed in $(format_time $SECONDS)"
-    echo ""
     echo "// Running Permute Enumeration on $domain"
 }
 
 function text5() {
     sleep 2
-    echo "[/] Script completed in $(format_time $SECONDS)"
-    echo ""
     echo "// Generating Final Subdomain List on $domain"
 }
 
 function text6() {
     sleep 2
-    echo "[/] Script completed in $(format_time $SECONDS)"
-    echo ""
     echo "// Running Httpx on $domain"
 }
-
-function text7() {
-    echo "[/] Script completed in $(format_time $SECONDS)"
-    echo ""
-}
-
 
 ## Logic
 banner
@@ -152,5 +138,4 @@ text5
 SubFinal &>/dev/null
 text6
 Htpx &>/dev/null
-text7
 sefresult
