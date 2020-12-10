@@ -6,7 +6,7 @@
 \  -- | |__ | |_
   --  \  __||  _ |
 /\__/ / |___| |
-\____/\____/\_| @remonsec
+\____/\____/\_| @remonsec @KathanP19
 Subdomain Enumeration Framework v2.0
 ```
 

@@ -20,7 +20,7 @@ function banner() {
     ██████╔╝███████╗██║░░░░░░░░░░░░╚═██╔═╝░╚██████╔╝██║╚█████╔╝██║░╚██╗
     ╚═════╝░╚══════╝╚═╝░░░░░░░░░░░░░░╚═╝░░░░╚═════╝░╚═╝░╚════╝░╚═╝░░╚═╝"
     echo ""
-    echo  "       @remonsec"
+    echo  "       @remonsec @KathanP19"
     echo "Subdomain Enumeration Framework"
 }
 
