@@ -25,8 +25,24 @@ Subdomain Enumeration Framework v2.0
 
 Using resolver.txt from public-dns.info
 
-# Usage
+# Info
+
+## SEF
+
+SEF covers all Active, Passive & Permuted enumeration. It will use the wordlist all.txt by default and resolver from public-dns.info
+
+## Usage
 
 ```
-SEF site.com
+sef site.com
+```
+
+## SEF-QUICK
+
+SEF-QUICK covers only Passive enumeration. It will use community standard passive tools Subfinder, Findomain, Amass, Assetfinder with default configuration
+
+## Usage
+
+```
+sef-quick site.com
 ```

@@ -29,9 +29,9 @@ domain=$1
 
 ## Function
 function format_time() {
-((h=${1}/3600))
-((m=(${1}%3600)/60))
-((s=${1}%60))
+    ((h=${1}/3600))
+    ((m=(${1}%3600)/60))
+    ((s=${1}%60))
 printf "%02d:%02d:%02d\n" $h $m $s
 }
 
@@ -81,6 +81,7 @@ function SubFinal() {
 function Htpx() {
     httpx -l sub.txt -silent -o sub.httpx
     httpx -l sub.txt -csp-probe -silent | grep -F ".$domain" | anew sub.httpx
+    httpx -l sub.txt -tls-probe -silent | grep -F ".$domain" | anew sub.httpx
 }
 
 
