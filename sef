@@ -35,6 +35,22 @@ function format_time() {
 printf "%02d:%02d:%02d\n" $h $m $s
 }
 
+function Tool_Check(){
+    echo ""
+    echo ""
+    type -P subfinder &>/dev/null && echo "[*] Subfinder		YES	]" || { echo "[*] Subfinder		NO	]"; }
+    type -P assetfinder &>/dev/null && echo "[*] Assetfinder		YES	]" || { echo "[*] Assetfinder		NO	]"; }
+    type -P findomain &>/dev/null && echo "[*] Findomain		YES	]" || { echo "[*] Findomain		NO	]"; }
+    type -P amass &>/dev/null && echo "[*] Amass		YES	]" || { echo "[*] Amass		NO	]"; }
+    type -P shuffledns &>/dev/null && echo "[*] ShuffleDns		YES	]" || { echo "[*] ShuffleDns		NO	]"; }
+    type -P massdns &>/dev/null && echo "[*] Massdns		YES	]" || { echo "[*] Massdns		NO	]"; }
+    type -P dnsgen &>/dev/null && echo "[*] DnsGen		YES	]" || { echo "[*] DnsGen		NO	]"; }
+    type -P anew &>/dev/null && echo "[*] Anew		YES	]" || { echo "[*] Anew		NO ]"; }
+    type -P httpx &>/dev/null && echo "[*] Httpx		YES	]" || { echo "[*] Httpx		NO	]"; }
+    echo ""
+    echo ""
+}
+
 function Passive() {
     subfinder -d $domain -o subfinder.txt -all
     assetfinder --subs-only $domain | sort -u > assetfinder.txt
@@ -95,8 +111,6 @@ function sefresult() {
 }
 
 function text1() {
-    echo ""
-    echo ""
     echo "// Running Passive Enumeration on $domain"
 }
 
@@ -127,6 +141,7 @@ function text6() {
 
 ## Logic
 banner
+Tool_Check
 text1
 Passive &>/dev/null
 text2
