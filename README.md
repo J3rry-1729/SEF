@@ -7,10 +7,11 @@
   --  \  __||  _ |
 /\__/ / |___| |
 \____/\____/\_| @remonsec @KathanP19
-Subdomain Enumeration Framework v2.0
+Subdomain Enumeration Framework v1.0
 ```
 
 # Requirnment 
+
 * Subfinder
 * Findomain
 * Assetfinder
@@ -18,31 +19,23 @@ Subdomain Enumeration Framework v2.0
 * Anew
 * ShuffleDNs
 * MassDns
-* all.txt
-* resolvers.txt
 * Dnsgen
 * Httpx
 
-Using resolver.txt from public-dns.info
-
 # Info
 
-## SEF
-
-SEF covers all Active, Passive & Permuted enumeration. It will use the wordlist all.txt by default and resolver from public-dns.info
+SEF covers all Active, Passive & Permuted enumeration. You will get different flags to specify what types of enumeration you want. The aim is to give you as much subdomain as possible
 
 ## Usage
 
 ```
-sef site.com
-```
-
-## SEF-QUICK
-
-SEF-QUICK covers only Passive enumeration. It will use community standard passive tools Subfinder, Findomain, Amass, Assetfinder with default configuration
-
-## Usage
-
-```
-sef-quick site.com
+Usage: 						
+       sef -d       To Specify Domain.
+       sef -w       To Specify wordlist to use else (Default).
+       sef -r       To Specify resolver to use else (Default).
+       sef -o       To Store all the result in specific folder.
+       sef --dL     To Import Domain-list.
+       sef --ac     To Specify Amass-config file.
+       sef --quick  To quicky perform passive scan of domain.
+       sef --all    To fully scan using all functionality.
 ```
