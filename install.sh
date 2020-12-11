@@ -16,6 +16,7 @@ logo
 #Install Golang.
 echo -e "Installing Go-Lang";
 wget -q -O - https://git.io/vQhTU | bash
+source ~/.bashrc
 echo -e " ";
 
 
@@ -65,6 +66,12 @@ echo -e " ";
 #Install Httpx
 echo -e "Installing Httpx";
 GO111MODULE=on go get -u -v github.com/projectdiscovery/httpx/cmd/httpx
+echo -e " ";
+
+#download default wordlist
+echo -e "Downloading Wordlist";
+curl -O https://s3.amazonaws.com/assetnote-wordlists/data/manual/2m-subdomains.txt
+curl -O https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt
 echo -e " ";
 
 echo -e "Installation Completed.";
