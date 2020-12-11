@@ -26,8 +26,10 @@ GO111MODULE=on go get -u -v github.com/projectdiscovery/subfinder/v2/cmd/subfind
 echo -e " ";
 
 #Install Amass.
+AMASS_VERSION=3.10.5
 echo -e "Installing Amass";
-GO111MODULE=on go get -u -v github.com/OWASP/Amass/v3/...
+cd ~ && echo -e "Downloading amass version ${AMASS_VERSION} ..." && wget -q https://github.com/OWASP/Amass/releases/download/v${AMASS_VERSION}/amass_linux_amd64.zip && unzip amass_linux_amd64.zip && mv amass_linux_amd64/amass /usr/bin/
+cd ~ && rm -rf amass_linux_amd64* amass_linux_amd64.zip*
 echo -e " ";
 
 #Install Assetfinder.
@@ -35,6 +37,13 @@ echo -e "Installing Assetfinder";
 go get -u github.com/tomnomnom/assetfinder
 echo -e " ";
 
+#Install massdns
+echo "Installing massdns"
+git clone https://github.com/blechschmidt/massdns.git ~/massdns
+cd ~/massdns
+make
+mv ~/massdns/bin/massdns /usr/local/bin/
+echo -e " ";
 
 #Install Findomain.
 echo -e "Installing Findomain";
@@ -68,10 +77,10 @@ echo -e "Installing Httpx";
 GO111MODULE=on go get -u -v github.com/projectdiscovery/httpx/cmd/httpx
 echo -e " ";
 
-#download default wordlist
+#Wordlist
 echo -e "Downloading Wordlist";
 curl -O https://s3.amazonaws.com/assetnote-wordlists/data/manual/2m-subdomains.txt
+echo -e "Downloading Resolvers"
 curl -O https://raw.githubusercontent.com/janmasarik/resolvers/master/resolvers.txt
-echo -e " ";
 
 echo -e "Installation Completed.";
