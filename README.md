@@ -18,6 +18,7 @@ SEF covers
 * Permuted Enumeration
 
 You also can have a quick passive scan
+
 The aim is to give you as much subdomain as possible
 
 
@@ -33,7 +34,8 @@ The aim is to give you as much subdomain as possible
 * Dnsgen
 * Httpx
 
-Run install.sh and it will install all the requirnments 
+Run install.sh and it will install all the requirnments
+
 Make sure that, you are running install.sh as root
 
 ## Usage
