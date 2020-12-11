@@ -50,7 +50,7 @@ Tool_Check
 
 function Passive() {
     echo "[=] Running Passive Enumeration"
-    subfinder -d $domain -o subfinder.txt -all &>/dev/null
+    subfinder -d $domain -silent -all >> subfinder.txt
     assetfinder --subs-only $domain | sort -u > assetfinder.txt &>/dev/null
     amass enum -passive -norecursive -noalts -d $domain -config $amass_config -o amass.txt &>/dev/null
     findomain -t $domain -u findomain.txt &>/dev/null
