@@ -12,7 +12,7 @@ Subdomain Enumeration Framework v1.0
 
 # Info
 
-SEF covers  
+SEF will cover  
 * Active Enumeration
 * Passive Enumeration
 * Permuted Enumeration
