@@ -49,7 +49,7 @@ function Tool_Check(){
 Tool_Check
 
 function Passive() {
-    echo "[=] Running Passive Enumeration on $domain_list"
+    echo "[=] Running Passive Enumeration"
     subfinder -d $domain -o subfinder.txt -all &>/dev/null
     assetfinder --subs-only $domain | sort -u > assetfinder.txt &>/dev/null
     amass enum -passive -norecursive -noalts -d $domain -config $amass_config -o amass.txt &>/dev/null
@@ -59,14 +59,14 @@ function Passive() {
 }
 
 function Active() {
-    echo "[=] Running Active Enumeration on $domain_list"
+    echo "[=] Running Active Enumeration"
     shuffledns -d $domain -w $list_wordlist -r $list_resolver -o active_tmp.txt &>/dev/null
     cat active_tmp.txt | grep -F ".$domain" | sed "s/*.//" > active.txt
     rm active_tmp.txt
 }
 
 function ActPsv() {
-    echo "[=] Collecting Active & Passive Enum Result on $domain_list"
+    echo "[=] Collecting Active & Passive Enum Result"
     cat active.txt passive.txt | grep -F ".$domain" | sort -u | shuffledns -d $domain -r $list_resolver -o active_passive.txt &>/dev/null
     rm active.txt passive.txt
 }
@@ -74,7 +74,7 @@ function ActPsv() {
 function Permute() {
     if [[ $(cat active_passive.txt | wc -l) -le 50 ]]
     then
-        echo "[=] Running Dual Permute Enumeration on $domain_list"
+        echo "[=] Running Dual Permute Enumeration"
         dnsgen active_passive.txt | shuffledns -d $domain -r $list_resolver -o permute1_tmp.txt &>/dev/null
         cat permute1_tmp.txt | grep -F ".$domain" > permute1.txt 
         dnsgen permute1.txt | shuffledns -d $domain -r $list_resolver -o permute2_tmp.txt &>/dev/null
@@ -83,7 +83,7 @@ function Permute() {
         rm permute1.txt permute1_tmp.txt permute2.txt permute2_tmp.txt
     elif [[ $(cat active_passive.txt | wc -l) -le 100 ]]
     then
-        echo "[=] Running Single Permute Enumeration on $domain_list"
+        echo "[=] Running Single Permute Enumeration"
         dnsgen active_passive.txt | shuffledns -d $domain -r $list_resolver -o permute_tmp.txt &>/dev/null
         cat permute_tmp.txt | grep -F ".$domain" > permute.txt
         rm permute_tmp.txt
@@ -113,9 +113,9 @@ function Htpx() {
 function sefresult() {
     echo ""
     echo ""
-    echo "[#] Total Subdomain Found for $domain_list $(cat sub.txt | wc -l)"
-    echo "[#] Total HTTP Probed Found for on $domain_list $(cat sub.httpx | wc -l)"
-    echo "[#] Script completed for $domain_list in total $(format_time $SECONDS)"
+    echo "[#] Total Subdomain Found $(cat sub.txt | wc -l)"
+    echo "[#] Total HTTP Probed Found $(cat sub.httpx | wc -l)"
+    echo "[#] Script completed in total $(format_time $SECONDS)"
 }
 
 while getopts ":hd:w:r:o:-:" optchar;do
