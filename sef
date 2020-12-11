@@ -93,7 +93,7 @@ function Permute() {
 }
 
 function SubFinal() {
-    echo "[=] Collecting Enumeration Final Result"
+    echo "[=] Collecting Enumerated Final Result"
     cat active.txt passive.txt active_passive.txt permute.txt 2>/dev/null | grep -F ".$domain" | sort -u > sub.txt
 }
 
@@ -115,7 +115,7 @@ function sefresult() {
     echo ""
     echo "[#] Total Subdomain Found $(cat sub.txt | wc -l)"
     echo "[#] Total HTTP Probed Found $(cat sub.httpx | wc -l)"
-    echo "[/] Script completed in total $(format_time $SECONDS)"
+    echo "[#] Script completed in total $(format_time $SECONDS)"
 }
 
 while getopts ":hd:w:r:o:-:" optchar;do
