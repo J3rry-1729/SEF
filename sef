@@ -117,23 +117,23 @@ while getopts ":hd:w:r:o:-:" optchar;do
                                 dL)
                                         domain_list="${!OPTIND}"; OPTIND=$(( $OPTIND + 1))
                                         ;;
-				                ac)
+				ac)
                                         amass_config="${!OPTIND}"; OPTIND=$(( $OPTIND + 1))
                                         ;;
-				                quick)
+				quick)
                                         Passive;
-				                    	SubFinal;
-				                    	Htpx;
-				                    	sefresult;
+					SubFinal;
+					Htpx;
+					sefresult;
                                         ;;
-				                all)
+				all)
                                         Passive;
-				                    	Active;
-				                    	ActPsv;
-				                    	Permute;
-				                      	SubFinal;
-				                    	Htpx;
-				                    	sefresult;
+					Active;
+					ActPsv;
+					Permute;
+					SubFinal;
+					Htpx;
+					sefresult;
                                         ;;
                                 *)
                                         if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
@@ -143,11 +143,11 @@ while getopts ":hd:w:r:o:-:" optchar;do
                         esac;;
                 h)
                         echo "Usage: 						"
-			            echo "       $0 -d       To Specify Domain."
-		            	echo "       $0 -w       To Specify wordlist to use else (Default)."
-			            echo "       $0 -r       To Specify resolver to use else (Default)."
-			            echo "       $0 -o       To Store all the result in specific folder."
-			            echo "       $0 --dL     To Import Domain-list."
+			echo "       $0 -d       To Specify Domain."
+			echo "       $0 -w       To Specify wordlist to use else (Default)."
+			echo "       $0 -r       To Specify resolver to use else (Default)."
+			echo "       $0 -o       To Store all the result in specific folder."
+			echo "       $0 --dL     To Import Domain-list."
                         echo "       $0 --ac     To Specify Amass-config file."
                         echo "       $0 --quick  To quicky perform passive scan of domain."
                         echo "       $0 --all    To fully scan using all functionality."
