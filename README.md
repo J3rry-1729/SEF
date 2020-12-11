@@ -36,6 +36,6 @@ Usage:
        sef -o       To Store all the result in specific folder.
        sef --dL     To Import Domain-list.
        sef --ac     To Specify Amass-config file.
-       sef --quick  To quicky perform passive scan of domain.
+       sef --quick  To quickly perform passive scan of domain.
        sef --all    To fully scan using all functionality.
 ```
