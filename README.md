@@ -10,6 +10,17 @@
 Subdomain Enumeration Framework v1.0
 ```
 
+# Info
+
+SEF covers  
+* Active Enumeration
+* Passive Enumeration
+* Permuted Enumeration
+
+You also can have a quick passive scan
+The aim is to give you as much subdomain as possible
+
+
 # Requirnment 
 
 * Subfinder
@@ -22,9 +33,8 @@ Subdomain Enumeration Framework v1.0
 * Dnsgen
 * Httpx
 
-# Info
-
-SEF covers all Active, Passive & Permuted enumeration. You will get different flags to specify what types of enumeration you want. The aim is to give you as much subdomain as possible
+Run install.sh and it will install all the requirnments 
+Make sure that, you are running install.sh as root
 
 ## Usage
 
