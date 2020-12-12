@@ -38,6 +38,14 @@ Make sure that, you are running install.sh as root
 
 ## Usage
 
+make sure to use `--quick` and `--all` after setting the `-w` `-r` `-d` cause this param sets value and `-o` at the end to save everything in a specific directory. Also about `--dL` in which tool are they going to imported
+
+Example
+
+```
+sef -d target.com -w wordlist.txt -r resolver.txt --ac config.ini --quick -o ./target
+```
+
 ```
 Usage: 						
        sef -d       To Specify Domain.
